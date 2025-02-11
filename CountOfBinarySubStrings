@@ -1,0 +1,23 @@
+#include<iostream>
+int countBinarySubstring(const std::string& str)
+{
+  int count=0, curr =1 , prev =0;
+ for(int i = 0;i<str.lenght();i++) {
+    if ( s.at(i) == s.at(i-1) ) 
+      curr++;
+      else  {
+         prev=curr;
+       curr=1;
+      }
+  if (  prev >= curr)
+      count++;
+}
+return count;
+}
+
+int main (
+constexpr std::string value("0001110011");
+auto total= countBinarySubstring(value);
+std::cout<<total<<std::endl;
+return 0;
+}
