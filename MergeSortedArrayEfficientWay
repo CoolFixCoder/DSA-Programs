@@ -1,0 +1,134 @@
+#include <iostream>
+#include<vector>
+#include<algorithm>
+#include<string>
+#include<set>
+
+class Solution {
+public:
+     //Efficient one
+    //The time complexity of the above solution is O(m + n) and runs in constant space. Here, m and n are the size of the first and second array, respectively.
+     
+    void merge(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+        // return if nums1 is empty
+        if (m == 0)
+            return;
+        std::cout << "Initial m = " << m << std::endl;
+        std::cout << "Initial n = " << n << std::endl;
+        //moves non-empty elements of nums1 at the beginning
+         int k = 0;
+        for ( int i = 0; i < m; i++) {
+            if (nums1[i] != 0) {
+                nums1[k++] = nums1[i];
+            }
+        }
+       
+        //merge 'nums1[0 ..k-1] and nums2[0..n-1] into nums1[0...m-1]
+        //merge(nums1, k - 1, nums2, n - 1);
+        m = k - 1;
+        n = n - 1;
+        
+        int index = m + n + 1;
+            
+        //run if nums1 or nums2 has elements left
+        while (m >= 0 && n >= 0) {
+            //put the next greater element in the next free position in nums1 from the end
+            if (nums1[m] > nums2[n]) {
+                 nums1[index--]= nums1[m--];
+            }
+            else {
+                nums1[index--] = nums2[n--];               
+            }
+        }
+
+        //copy the remaining elements of nums2 (if any) to num1
+        while (n >= 0) {
+            nums1[index--] = nums2[n--];
+        }
+        //fill nums2 with all zeros
+        for (int i = 0; i < n; i++)
+            nums2[i] = 0;     
+
+    }
+
+   
+};
+//C++20
+template<typename T>
+std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
+{
+    s.put('{');
+    for (char comma[]{ '\0', ' ', '\0' }; const auto & e : v)
+       s << comma << e, comma[0] = ',';
+    //for (const auto& e : v)
+       // s << e << " ,";
+    return s << "}\n";
+}
+
+int main()
+{
+    std::vector<int> nums1 = { 0, 2, 0, 3, 0, 5, 6, 0, 0 };
+    //std::vector<int> nums1 = {1, 3, 4, 5, 20, 30 };
+    std::vector<int> nums2 = {1, 8, 9, 10, 15 };
+
+    std::cout << "First vector contain values are:  " << nums1;
+    std::cout << "Second vector contain values are:" << nums2;
+   
+    Solution soln;
+    soln.merge(nums1, nums1.size(), nums2, nums2.size());
+
+    std::cout << "Final result contain values are: " << nums1;
+
+   //6 ways
+    /* 1.merge(beg1, end1, beg2, end2, beg3):- This function merges two sorted containers and stores them in a new container in sorted order (merge sort). It takes 5 arguments, first and the last iterator of 1st container, first and the last iterator of 2nd container and 1st iterator of the resultant container.
+    
+    std::merge(nums1.begin(), nums1.end(), nums2.begin(), nums2.end(), result.begin());
+    std::cout << "final vector is " << result;
+    //Observation: if an input vector contains more than one zero elements, it will fail in std::merge call
+   
+
+    /* 2 inplace_merge(beg1, beg2, end):- This function is used to sort two consecutively placed sorted ranges in a single container. It takes 3 arguments, an iterator to the beginning of 1st sorted range, an iterator to the beginning of 2nd sorted range, an iterator to the last position.
+    
+    
+    // using copy to copy both vectors into  
+ // one container 
+    auto it = copy(nums1.begin(), nums1.end(), result.begin());
+    copy(nums2.begin(), nums2.end(), it);
+
+    // Using inplace_merge() to sort the container 
+    std::inplace_merge(result.begin(), it, result.end());
+    std::cout << "final vector is " << result;
+    */
+
+    /*
+    3.set_union(beg1, end1, beg2, end2, beg3):- This function computes the set union of two containers and stores them in a new container . It returns the iterator to the last element of the resultant container. It takes 5 arguments, the first and the last iterator of the 1st container, the first and last iterator of the 2nd container, and 1st iterator of the resultant container. The containers should be sorted and it is necessary that the new container is resized to a suitable size.
+       
+    
+    std::set_union(nums1.begin(), nums1.end(), nums2.begin(), nums2.end(), result.begin());
+    std::cout << "final vector is " << result;
+    */
+    /*\
+    * set_intersection(beg1, end1, beg2, end2, beg3):- This function computes the set intersection of two containers and stores it in a new container . It returns the iterator to the last element of the resultant container. It takes 5 arguments, the first and the last iterator of 1st container, the first and the last iterator of the 2nd container, and 1st iterator of the resultant container. The containers should be sorted and it is necessary that the new container is resized to a suitable size.
+  
+    std::set_intersection(nums1.begin(), nums1.end(), nums2.begin(), nums2.end(), result.begin());
+    std::cout << "final vector is " << result;
+   
+    * 5.set_difference(beg1, end1, beg2, end2, beg3):- This function computes the set difference of two containers and stores them in a new container. It returns the iterator to the last element of the resultant container. It takes 5 arguments, the first and the last iterator of the 1st container, the first and the last iterator of the 2nd container, and 1st iterator of the resultant container. The containers should be sorted and it is necessary that the new container is resized to a suitable size.
+
+6.set_symmetric_difference(beg1, end1, beg2, end2, beg3):- This function computes the set symmetric difference of two containers and stores it in a new container . It returns the iterator to the last element of the resultant container. It takes 5 arguments, the first and the last iterator of the 1st container, the first and the last iterator of the 2nd container, and 1st iterator of the resultant container. The containers should be sorted and it is necessary that the new container is resized to a suitable size. vector v1 = {1, 3, 4, 5, 20, 30};
+
+    
+
+
+    // using set_difference() to compute difference 
+ // of 2 containers v1 and v2. 
+    auto it = set_difference(nums1.begin(), nums1.end(), nums2.begin(), nums2.end(), result.begin());
+    std::cout << "final vector is " << result;
+    // using set_symmetric_difference() to compute  
+    // symmetric_difference/ of 2 containers 
+    auto it1 = set_symmetric_difference(nums1.begin(), nums1.end(), nums2.begin(), nums2.end(), result.begin());
+    std::cout << "final vector is " << result;
+    */
+    return 0;
+
+}
