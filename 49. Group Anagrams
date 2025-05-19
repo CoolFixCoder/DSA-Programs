@@ -1,0 +1,84 @@
+/*
+Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+Explanation:
+
+There is no string in strs that can be rearranged to form "bat".
+The strings "nat" and "tan" are anagrams as they can be rearranged to form each other.
+The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
+Example 2:
+
+Input: strs = [""]
+
+Output: [[""]]
+
+Example 3:
+
+Input: strs = ["a"]
+
+Output: [["a"]]
+*/
+
+//Time complexity: O(m∗nlogn)
+//Space complexity: O(mn)
+std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
+    
+    std::unordered_map<std::string, std::vector<std::string>> ans;
+
+    for (std::string& s : strs) {
+        std::string key = s;
+        sort(key.begin(), key.end());
+        ans[key].push_back(s);
+    }
+
+    std::vector<std::vector<std::string>> result;
+    for (auto& entry : ans)t
+        result.push_back(entry.second);
+
+}
+
+//Complexity
+//Time complexity: O(m∗n)
+//Space complexity: O(mn)
+ vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> ans;
+
+        for (string& s : strs) {
+            array<int, 26> count = {0};
+
+            // Count frequency of each letter in the string
+            for (char c : s) {
+                count[c - 'a']++;
+            }
+
+            string key;
+            for (int num : count) {
+                key += to_string(num) + "#";
+            }
+
+            ans[key].push_back(s);
+        }
+
+        vector<vector<string>> result;
+        for (auto& entry : ans) {
+            result.push_back(move(entry.second));
+        }
+
+        return result;        
+    }
+
+
+int main()
+{
+std::vector<std::string> strs{"eat","tea","tan","ate","nat","bat"};
+auto result = groupAnagrams(vector<string>& strs);
+return 0;
+}
